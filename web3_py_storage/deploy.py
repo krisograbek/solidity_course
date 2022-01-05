@@ -4,7 +4,6 @@ from solcx import compile_standard
 from solcx import install_solc
 from web3 import Web3
 from dotenv import load_dotenv
-from web3.types import TxReceipt
 
 load_dotenv()
 
@@ -41,12 +40,15 @@ abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 # print(abi)
 
 # connecting to ganache
-w3 = Web3(Web3.HTTPProvider("http://0.0.0.0:8545"))
-chain_id = 1337
-my_address = "0x68f26e13A7e50333cC2d901417bc06D90dD23739"
+w3 = Web3(
+    Web3.HTTPProvider("https://rinkeby.infura.io/v3/d88668b8da4d444cbcc64866c7461307")
+)
+chain_id = 4
+my_address = "0x55595eD1bb53a2C54C4C6818773ace899A971959"
 private_key = os.getenv("PRIVATE_KEY")
 
 # create the contract in Python
+print("Deploying contract")
 SimpleStorage = w3.eth.contract(abi=abi, bytecode=bytecode)
 # print(SimpleStorage)
 
@@ -72,16 +74,42 @@ signed_txn = w3.eth.account.sign_transaction(transaction, private_key=private_ke
 # sent the signed transaction
 tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
 tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+print("Deployed! ")
 
 # working with the conract, we need
 # Contract address
 # Contract ABI
 
+print("Updating contract ")
 simple_storage = w3.eth.contract(address=tx_receipt.contractAddress, abi=abi)
 
 # get the initial favNumber value (from solidity)
+print("Initial favNumber")
 print(simple_storage.functions.retrieve().call())
 
-# assign a new value to favNumber
-print(simple_storage.functions.store(15).call())
+# try assign a new value to favNumber with call
+# print(simple_storage.functions.store(15).call())
+# # the favNumber value didn't change
+# print(simple_storage.functions.retrieve().call())
+
+# make a transaction that changes the favNumber
+
+store_transaction = simple_storage.functions.store(20).buildTransaction(
+    {
+        "gasPrice": w3.eth.gas_price,
+        "chainId": chain_id,
+        "from": my_address,
+        "nonce": nonce + 1,
+    }
+)
+# sign transaction
+signed_store_tx = w3.eth.account.sign_transaction(
+    store_transaction, private_key=private_key
+)
+
+# send the signed transaction
+store_tx_hash = w3.eth.send_raw_transaction(signed_store_tx.rawTransaction)
+store_tx_receipt = w3.eth.wait_for_transaction_receipt(store_tx_hash)
+
+print("New favNumber")
 print(simple_storage.functions.retrieve().call())
