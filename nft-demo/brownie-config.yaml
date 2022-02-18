@@ -1,0 +1,15 @@
+dotenv: .env
+
+dependencies:
+  - OpenZeppelin/openzeppelin-contracts@3.4.0
+  
+compiler:
+  solc:
+    remappings:
+      - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@3.4.0'
+
+networks:
+  default: mainnet-fork
+  mainnet-fork:
+    account: 'test1'
+  
