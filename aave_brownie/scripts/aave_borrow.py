@@ -3,17 +3,18 @@ from scripts.helpful_scripts import get_account
 from scripts.get_weth import get_weth
 from web3 import Web3
 
-amount = Web3.toWei(0.1, "ether")
+amount = Web3.toWei(1, "ether")
 
 
 def approve_erc20(spender, amount, erc20_address, account):
     print("Approving erc20...")
     # ABI for ERC20 with the address
     erc20 = interface.IERC20(erc20_address)
+    print(f"Approving amount of {amount} ")
     tx = erc20.approve(spender, amount, {"from": account})
     tx.wait(1)
-    print("Approved!")
-    # return tx
+    print(f"Approved? {tx}")
+    return tx
 
 
 def get_lending_pool():
