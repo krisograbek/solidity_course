@@ -2,14 +2,18 @@ dotenv: .env
 
 dependencies:
   - OpenZeppelin/openzeppelin-contracts@3.4.0
+  - smartcontractkit/chainlink-brownie-contracts@1.1.1
   
 compiler:
   solc:
     remappings:
       - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@3.4.0'
+      - '@chainlink=smartcontractkit/chainlink-brownie-contracts@1.1.1'
 
 networks:
   default: mainnet-fork
   mainnet-fork:
     account: 'test1'
-  
+
+  rinkeby:
+    account: 'test1'  
