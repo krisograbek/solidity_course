@@ -15,6 +15,15 @@ contract AdvancedCollectible is ERC721, VRFConsumerBase {
         ST_BERNARD
     }
 
+    mapping(uint256 => Breed) public tokenIdToBreed;
+    event breedAssigned(uint256 indexed tokenId, Breed breed);
+
+    // mapping for senders
+    mapping(bytes32 => address) public requestIdToSender;
+    event requestedCollectible(bytes32 indexed requestId, address requester);
+
+    // event
+
     constructor(
         address _vrfCoordinator,
         address _linkToken,
@@ -32,15 +41,42 @@ contract AdvancedCollectible is ERC721, VRFConsumerBase {
 
     function createCollectible(string memory tokenURI)
         public
-        returns (uint256)
+        returns (bytes32)
     {
         bytes32 requestId = requestRandomness(keyHash, fee);
+        // assign the sender address to this request ID
+        requestIdToSender[requestId] = msg.sender;
+        emit requestedCollectible(requestId, msg.sender);
     }
 
     function fulfillRandomness(bytes32 requestId, uint256 randomNumber)
         internal
         override
     {
+        // select a breed based on a random number
         Breed breed = Breed(randomNumber % 3);
+        // assign a new token ID to a breed
+        uint256 newTokenId = tokenCounter;
+        tokenIdToBreed[newTokenId] = breed;
+        emit breedAssigned(newTokenId, breed);
+
+        // we can't use msg.sender for a sender, because VRFCoordinator
+        // is calling this callback function
+        // get sender
+        address sender = requestIdToSender[requestId];
+        // mint NFT with our sender and token ID
+        _safeMint(sender, newTokenId);
+
+        tokenCounter = tokenCounter + 1;
+    }
+
+    function setTokenURI(uint256 _tokenId, string memory _tokenURI) public {
+        // built in function of ERC721
+        // checks if the caller is an owner or approved
+        require(
+            _isApprovedOrOwner(_msgSender(), _tokenId),
+            "ERC721: caller is not owner nor approved"
+        );
+        _setTokenURI(_tokenId, _tokenURI);
     }
 }

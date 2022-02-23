@@ -4,6 +4,9 @@ LOCAL_ENVS = ["mainnet-fork", "development"]
 
 TEST_NETWORKS_LIST = ["rinkeby", "kovan"]
 
+OPENSEA_URL = "https://testnets.opensea.io/assets/{}/{}"
+RARIBLE_URL = "https://rinkeby.rarible.com/token/{}:{}"
+
 
 def get_account(index=None, id=None):
     if index:
