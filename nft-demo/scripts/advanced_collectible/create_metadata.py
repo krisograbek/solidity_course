@@ -21,7 +21,7 @@ def main():
         else:
             print(f"Creating Metadata file: {metadata_filename}")
             collectible_metadata["name"] = breed
-            collectible_metadata["description"] = f"An adorable {breed} pup!"
+            collectible_metadata["description"] = f"An adorable {breed} pup! WOW!"
             image_path = "./img/" + breed.lower().replace("_", "-") + ".png"
 
             # image_uri = None
