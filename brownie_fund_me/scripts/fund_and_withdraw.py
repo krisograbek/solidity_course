@@ -1,4 +1,3 @@
-from turtle import width
 from brownie import FundMe
 from scripts.helpers import get_account
 
