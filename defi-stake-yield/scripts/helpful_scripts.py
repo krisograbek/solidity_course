@@ -7,6 +7,7 @@ from brownie import (
     MockDAI,
     MockV3Aggregator,
 )
+from web3 import Web3
 
 
 LOCAL_BLOCKCHAINS = ["development", "mainnet-fork"]
@@ -27,10 +28,10 @@ def get_account(index=None):
 
 
 contract_to_mock = {
+    "dai_usd_price_feed": MockV3Aggregator,
     "weth_token": MockWETH,
     "dai_token": MockDAI,
     "eth_usd_price_feed": MockV3Aggregator,
-    "dai_usd_price_feed": MockV3Aggregator,
 }
 
 
@@ -69,6 +70,7 @@ def deploy_mocks(decimals=DECIMALS, initial_price_feed=INITIAL_PRICE_FEED_VALUE)
     """
     Deploy mocks for local Blockchains
     """
+
     account = get_account()
     print(f"The current active network is {network.show_active()}")
 

@@ -32,8 +32,8 @@ def deploy_contracts():
 
     add_allowed_tokens(token_farm, dict_of_allowed_tokens, account)
 
-    for i in range(token_farm.getAllowedTokensCount()):
-        print(f"Allowed token {i} - {token_farm.allowedTokens(i)}")
+    # for i in range(token_farm.getAllowedTokensCount()):
+    # print(f"Allowed token {i} - {token_farm.allowedTokens(i)}")
 
     return token_farm, dapp_token
 
