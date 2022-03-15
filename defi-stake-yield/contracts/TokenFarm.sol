@@ -16,6 +16,7 @@ contract TokenFarm is Ownable {
     // token address to token price feed address from chainlink
     mapping(address => address) public tokenPriceFeedMapping;
 
+    /// @return The address of the allowed token
     address[] public allowedTokens;
     // list of stakers
     address[] public stakers;
@@ -34,6 +35,10 @@ contract TokenFarm is Ownable {
         onlyOwner
     {
         tokenPriceFeedMapping[_token] = _priceFeed;
+    }
+
+    function getAllowedTokensCount() public view returns (uint256 count) {
+        return allowedTokens.length;
     }
 
     // stake tokens

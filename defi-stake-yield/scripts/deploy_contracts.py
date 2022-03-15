@@ -32,6 +32,11 @@ def deploy_contracts():
 
     add_allowed_tokens(token_farm, dict_of_allowed_tokens, account)
 
+    for i in range(token_farm.getAllowedTokensCount()):
+        print(f"Allowed token {i} - {token_farm.allowedTokens(i)}")
+
+    return token_farm, dapp_token
+
 
 def add_allowed_tokens(token_farm, dict_of_allowed_tokens, account):
     # loop through allowed tokens
@@ -41,6 +46,8 @@ def add_allowed_tokens(token_farm, dict_of_allowed_tokens, account):
         # add the token address to allowed tokens
         add_tx = token_farm.addAllowedTokens(token.address, {"from": account})
         add_tx.wait(1)
+
+        # TODO: uncomment
         # map tokens with their price feeds
         set_tx = token_farm.setPriceFeedContract(
             token.address, dict_of_allowed_tokens[token].address, {"from": account}
