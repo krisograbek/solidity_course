@@ -1,7 +1,8 @@
-import { ChainId, Config, DAppProvider, Kovan, Rinkeby } from '@usedapp/core';
 import Container from '@mui/material/Container';
+import { Config, DAppProvider, Kovan, Rinkeby } from '@usedapp/core';
 import React from 'react';
 import Header from './components/Header';
+import MainLayout from './components/MainLayout';
 
 
 const config: Config = {
@@ -13,7 +14,7 @@ function App() {
     <DAppProvider config={config}>
       <Header />
       <Container maxWidth="md">
-        <div>Hi</div>
+        <MainLayout />
       </Container>
     </DAppProvider>
   );
