@@ -1,8 +1,7 @@
 import { formatUnits } from '@ethersproject/units';
-import Typography from '@mui/material/Typography';
 import { useEthers, useTokenBalance } from '@usedapp/core';
-import React from 'react'
-import { Token } from '../MainLayout'
+import React from 'react';
+import { Token } from '../MainLayout';
 import BallanceMessage from './BallanceMessage';
 
 interface WalletBallanceProps {
@@ -14,12 +13,12 @@ function WalletBalance({ token }: WalletBallanceProps) {
   const { account } = useEthers();
   const tokenBalance = useTokenBalance(address, account);
   // console.log(tokenBalance?.toString())
-  const formattedTokenBallance: number = tokenBalance ? parseFloat(formatUnits(tokenBalance, 18)) : 0;
+  const formattedTokenBalance: number = tokenBalance ? parseFloat(formatUnits(tokenBalance, 18)) : 0;
 
   return (
     <BallanceMessage
       label={`Your un-staked ${name} balance`}
-      amount={formattedTokenBallance}
+      amount={formattedTokenBalance}
       imgSrc={img}
     />
   )
